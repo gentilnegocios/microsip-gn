@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import './App.css';
-import texLogo from 'tex_logo.png';
+import texLogo from './assets/tex_logo.png';
 
 function App() {
   const [contacts, setContacts] = useState([]);
