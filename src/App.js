@@ -1,8 +1,11 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import './App.css';
+import texLogo from 'tex_logo.png';
 
 function App() {
   const [contacts, setContacts] = useState([]);
+  const topRef = useRef(null);
+  const botRef = useRef(null);
 
   useEffect(() => {
     loadContacts();
@@ -25,6 +28,8 @@ function App() {
           number: contact.getAttribute('number')
         }));
         setContacts(parsedContacts);
+        const sortedContacts = [...parsedContacts].sort((a, b) => a.name.localeCompare(b.name));
+        setContacts(sortedContacts)
       })
       .catch(error => {
         console.error('Erro ao buscar contatos:', error);
@@ -64,11 +69,11 @@ function App() {
     const reader = new FileReader();
     reader.readAsDataURL(xmlString);
 
-    reader.onloadend = async function() {
+    reader.onloadend = async function () {
       const base64data = reader.result.split(',')[1]; // Remove o cabeçalho da string base64
 
       const githubToken = process.env.REACT_APP_GITHUB_TOKEN;
-      const repoOwner = 'devgentilnegocios';
+      const repoOwner = 'gentilnegocios';
       const repoName = 'microsip-gn';
       const path = 'public/contacts.xml';
       const message = 'Update contacts.xml';
@@ -99,24 +104,24 @@ function App() {
       }
 
       fetch(`https://api.github.com/repos/${repoOwner}/${repoName}/contents/${path}`, {
-            method: 'PUT',
-            headers: {
-                'Authorization': `Bearer ${githubToken}`,
-                'Content-Type': 'application/json',
-                'X-GitHub-Api-Version': '2022-11-28'
-            },
-            body: JSON.stringify({
-                message,
-                content,
-                sha
-            })
+        method: 'PUT',
+        headers: {
+          'Authorization': `Bearer ${githubToken}`,
+          'Content-Type': 'application/json',
+          'X-GitHub-Api-Version': '2022-11-28'
+        },
+        body: JSON.stringify({
+          message,
+          content,
+          sha
         })
+      })
         .then(response => response.json())
         .then(data => {
-            console.log(data);
+          console.log(data);
         })
         .catch(error => {
-            console.error('Erro ao enviar o arquivo para o GitHub:', error);
+          console.error('Erro ao enviar o arquivo para o GitHub:', error);
         });
 
     }
@@ -131,31 +136,51 @@ function App() {
     a.click();
     document.body.removeChild(a); // Now remove it
   }
+  const scrollToTop = () => {
+    topRef.current.scrollIntoView({ behavior: 'smooth' });
+  };
+  const scrollToBot = () => {
+    botRef.current.scrollIntoView({ behavior: 'smooth' });
+  };
 
   return (
     <div className="App">
-      {contacts.map((contact, index) => (
-        <div key={index}>
-          <input
-            type="text"
-            placeholder="Nome do contato"
-            value={contact.name}
-            onChange={(e) => updateContact(index, 'name', e.target.value)}
-          />
-          <input
-            type="text"
-            placeholder="Número"
-            value={contact.number}
-            onChange={(e) => updateContact(index, 'number', e.target.value)}
-          />
-          <button onClick={() => deleteContact(index)}>Delete</button>
-        </div>
-      ))}
+      <div ref={topRef} id="top"></div>
+      <div className="img-section">
+        <h1 className="title">Gerenciamento Microsip</h1>
+        <button className="btn btn-home" onClick={scrollToBot}>Gerenciar Microsip</button>
+      </div>
 
-      <button onClick={addContact}>Adicionar Contao</button>
-      <button onClick={downloadContacts}>Baixar Contatos</button>
-      <button onClick={updateOnGitHub}>Enviar para o GitHUb</button>
-    </div>
+      <button className="btn btn-tex" onClick={scrollToTop}>
+        <img src={texLogo} alt="Tex" className='img img-tex' ></img>
+      </button>
+      {
+        contacts.map((contact, index) => (
+          <div className="form-section" key={index}>
+
+            <input className="form"
+              type="text"
+              placeholder="Nome do contato"
+              value={contact.name.toUpperCase()}
+              onChange={(e) => updateContact(index, 'name', e.target.value)}
+            />
+            <input className="form"
+              type="text"
+              placeholder="Número"
+              value={contact.number}
+              onChange={(e) => updateContact(index, 'number', e.target.value)}
+            />
+            <button className="btn btn-delete" onClick={() => deleteContact(index)}>Delete</button>
+          </div>
+        ))
+      }
+      <div className="btn-section">
+        <button className="btn btn-list" onClick={addContact}>Adicionar Contato</button>
+        <button className="btn btn-list" onClick={downloadContacts}>Baixar Contatos</button>
+        <button className="btn btn-list" onClick={updateOnGitHub}>Enviar para o GitHUb</button>
+      </div>
+      <div ref={botRef} id="bot"></div>
+    </div >
   );
 }
 
