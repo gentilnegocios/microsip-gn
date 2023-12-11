@@ -56,7 +56,7 @@ function App() {
 
   const buildXmlBlob = () => {
     const contactsXML = `<?xml version="1.0"?> <contacts>${contacts.map(contact =>
-      `<contact name="${contact.name}" number="${contact.number}" />`
+      `<contact name="${contact.name}" number="${contact.number}" info="Not online" presence="1" directory="1" />`
     ).join('')}</contacts>`;
 
     const blob = new Blob([contactsXML], { type: 'application/xml' });
