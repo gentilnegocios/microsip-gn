@@ -1,37 +1,325 @@
 .App {
   text-align: center;
-}
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
   min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+  padding-bottom: 4rem;
 }
 
-.App-link {
-  color: #61dafb;
+/* Header */
+.app-header {
+  background: linear-gradient(135deg, #16213e 0%, #0f3460 100%);
+  padding: 2rem 1rem;
+  border-bottom: 1px solid #2a2a4a;
+  position: sticky;
+  top: 0;
+  z-index: 10;
 }
 
-@keyframes App-logo-spin {
+.title {
+  color: #fff;
+  font-size: 1.8rem;
+  font-weight: 700;
+  margin: 0;
+}
+
+.subtitle {
+  color: #8892b0;
+  font-size: 0.9rem;
+  margin: 0.5rem 0 0;
+}
+
+.unsaved-badge {
+  color: #f59e0b;
+  font-weight: 600;
+}
+
+/* Toast notifications */
+.toast {
+  position: fixed;
+  top: 1rem;
+  right: 1rem;
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  z-index: 1000;
+  animation: slideIn 0.3s ease;
+}
+
+.toast-success {
+  background-color: #10b981;
+  color: #fff;
+}
+
+.toast-error {
+  background-color: #ef4444;
+  color: #fff;
+}
+
+.toast-info {
+  background-color: #3b82f6;
+  color: #fff;
+}
+
+@keyframes slideIn {
   from {
-    transform: rotate(0deg);
+    transform: translateX(100%);
+    opacity: 0;
   }
   to {
-    transform: rotate(360deg);
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+/* Toolbar */
+.toolbar {
+  background: #16213e;
+  padding: 1rem 2rem;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1rem;
+  border-bottom: 1px solid #2a2a4a;
+  position: sticky;
+  top: 105px;
+  z-index: 9;
+}
+
+.search-input {
+  flex: 1;
+  min-width: 200px;
+  padding: 0.6rem 1rem;
+  border-radius: 8px;
+  border: 1px solid #2a2a4a;
+  background: #0f3460;
+  color: #e0e0e0;
+  font-size: 0.9rem;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.search-input:focus {
+  border-color: #4fc3f7;
+}
+
+.search-input::placeholder {
+  color: #6b7280;
+}
+
+.toolbar-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+/* Loading bar */
+.loading-bar {
+  height: 3px;
+  background: linear-gradient(90deg, #4fc3f7, #0f3460, #4fc3f7);
+  background-size: 200% 100%;
+  animation: loading 1.5s infinite;
+}
+
+@keyframes loading {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+/* Buttons */
+.btn {
+  border-radius: 6px;
+  color: white;
+  font-size: 0.8rem;
+  font-weight: 500;
+  padding: 0.5rem 1rem;
+  transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+.btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.btn:active {
+  transform: translateY(0);
+}
+
+.btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.btn-add {
+  background-color: #10b981;
+}
+
+.btn-add:hover {
+  background-color: #059669;
+}
+
+.btn-download {
+  background-color: #6366f1;
+}
+
+.btn-download:hover {
+  background-color: #4f46e5;
+}
+
+.btn-github {
+  background-color: #f59e0b;
+  color: #1a1a2e;
+}
+
+.btn-github:hover {
+  background-color: #d97706;
+}
+
+.btn-refresh {
+  background-color: #0ea5e9;
+}
+
+.btn-refresh:hover {
+  background-color: #0284c7;
+}
+
+.btn-delete {
+  background-color: transparent;
+  color: #ef4444;
+  font-size: 1rem;
+  padding: 0.4rem 0.7rem;
+  border-radius: 6px;
+  transition: all 0.2s;
+}
+
+.btn-delete:hover {
+  background-color: #ef4444;
+  color: #fff;
+}
+
+/* Contacts list */
+.contacts-list {
+  max-width: 700px;
+  margin: 1.5rem auto;
+  padding: 0 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.contact-card {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  background: #16213e;
+  border: 1px solid #2a2a4a;
+  border-radius: 10px;
+  padding: 0.75rem 1rem;
+  transition: all 0.2s;
+}
+
+.contact-card:hover {
+  border-color: #4fc3f7;
+  background: #1a2744;
+}
+
+.contact-fields {
+  flex: 1;
+  display: flex;
+  gap: 0.5rem;
+}
+
+.form {
+  border: 1px solid #2a2a4a;
+  border-radius: 6px;
+  color: #e0e0e0;
+  background: #0f3460;
+  padding: 0.5rem 0.75rem;
+  font-size: 0.85rem;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.form:focus {
+  border-color: #4fc3f7;
+}
+
+.form-name {
+  flex: 2;
+}
+
+.form-number {
+  flex: 1;
+}
+
+/* Floating button */
+.btn-float {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+  transition: all 0.2s;
+  z-index: 100;
+}
+
+.btn-tex {
+  background-color: #fff;
+  padding: 8px;
+}
+
+.btn-tex:hover {
+  transform: scale(1.1);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.5);
+}
+
+.img-tex {
+  width: 100%;
+  height: auto;
+  border-radius: 50%;
+}
+
+/* Responsive */
+@media only screen and (max-width: 768px) {
+  .title {
+    font-size: 1.4rem;
+  }
+
+  .toolbar {
+    flex-direction: column;
+    padding: 1rem;
+    top: 90px;
+  }
+
+  .search-input {
+    width: 100%;
+  }
+
+  .toolbar-actions {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .contact-fields {
+    flex-direction: column;
+  }
+
+  .contact-card {
+    flex-wrap: wrap;
+  }
+
+  .btn-float {
+    bottom: 1rem;
+    right: 1rem;
+    width: 48px;
+    height: 48px;
   }
 }
